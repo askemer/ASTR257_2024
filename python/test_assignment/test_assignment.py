@@ -47,7 +47,8 @@ print(img.shape)
 
 
 # plot the raw image
-plt.imshow(img, cmap = 'Blues_r');
+plt.imshow(img, cmap = 'Blues_r', vmin=-20, vmax = 80)
+plt.colorbar();
 
 
 # In[ ]:
@@ -60,7 +61,8 @@ nan_mask = [[np.isnan(img[i,j]) for j in range(len(img[0]))] for i in range(len(
 img[nan_mask] = 0
 
 # plot the image w/ NaNs = 0
-plt.imshow(img, cmap = 'Blues_r');
+plt.imshow(img, cmap = 'Blues_r', vmin=-20, vmax = 80)
+plt.colorbar();
 
 
 # In[ ]:
@@ -78,7 +80,8 @@ hdul.writeto('/home/ev/UCSC/Classes/ASTR_257/ASTR257_2022/python/test_assignment
 
 # load in the fits file and plot to verify it worked
 img2 = fits.getdata('/home/ev/UCSC/Classes/ASTR_257/ASTR257_2022/python/test_assignment/test2.fits', ext = 0)
-plt.imshow(img2, cmap = 'Blues_r');
+plt.imshow(img2, cmap = 'Blues_r', vmin=-20, vmax = 80)
+plt.colorbar();
 
 
 # In[ ]:
@@ -87,7 +90,8 @@ plt.imshow(img2, cmap = 'Blues_r');
 # measure the centroid of this star, using the brightest pixel as a guess,
 # and plot it to verify
 cntrd = photutils.centroids.centroid_sources(img, x_bright, y_bright, box_size = 41)
-plt.imshow(img, cmap = 'Blues_r')
-plt.plot(cntrd[0], cntrd[1], c = "xkcd:red", marker = '.')
+plt.imshow(img, cmap = 'Blues_r', vmin=-20, vmax = 80)
+plt.colorbar()
+plt.plot(cntrd[0], cntrd[1], c = "xkcd:red", marker = '.');
 
 print(cntrd)
