@@ -1,0 +1,22 @@
+*** Hourly airmass for Unknown Star ***
+
+Epoch 2000.00: RA  19 53 17.8, dec -23 07 13
+Epoch 2022.72: RA  19 54 39.0, dec -23 03 36
+
+At midnight: UT date 2022 Sep 19, Moon 0.36 illum, 166 degr from obj
+-- CAUTION -- proximity to Pluto   -- low-precision calculation shows
+ this direction as  0.30 deg away from Pluto   ---
+
+  Local      UT      LMST      HA     secz   par.angl. SunAlt MoonAlt
+
+  20 00     3 00    18 45    -1 09    2.170   -15.4    -10.8    ...
+  21 00     4 00    19 46    -0 09    2.027    -2.1     ...     ...
+  22 00     5 00    20 46     0 51    2.102    11.5     ...     ...
+  23 00     6 00    21 46     1 51    2.443    24.0     ...     ...
+   0 00     7 00    22 46     2 52    3.351    34.5     ...     ...
+   1 00     8 00    23 46     3 52    6.625    43.0     ...      3.3
+   2 00     9 00     0 46     4 52   (down)    49.5     ...     13.5
+   3 00    10 00     1 47     5 52   (down)    54.4     ...     24.4
+   4 00    11 00     2 47     6 52   (down)    57.8     ...     35.8
+   5 00    12 00     3 47     7 52   (down)    59.6     ...     47.3
+   6 00    13 00     4 47     8 52   (down)    59.2    -11.1    58.9
