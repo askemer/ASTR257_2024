@@ -52,7 +52,7 @@ sciences0 = np.zeros(5, dtype = object)
 folder = "/home/ev/UCSC/Classes/ASTR_257/ASTR257_2022/Project 1--Pluto/ArcysData/pluto0/"
 
 for file in sorted(os.listdir(folder)):
-    if file.endswith('.fits'):
+    if file.endswith('.fits') and 'RSF' not in file:
         i = int(file.split('0')[1].replace('.fits',''))-1
         data = fits.getdata(folder+file)
         header = fits.getheader(folder+file)
@@ -80,25 +80,45 @@ for file in sorted(os.listdir(folder)):
     # plt.savefig("/home/ev/UCSC/Classes/ASTR_257/ASTR257_2022/Project 1--Pluto/ArcysData/pluto0/{:s}".format(file.replace('.fits','.png')))
     # plt.close();
 
-# take the mean of each type of frame
-m_biases   = np.mean(biases, axis = 0)
-m_darks    = np.mean(darks, axis = 0)
-m_flats    = np.mean(flats, axis = 0)
-m_sciences0 = np.mean(sciences0, axis = 0)
+# stack arrays so that the are 3d
+biases    = np.stack(biases)
+darks     = np.stack(darks)
+flats     = np.stack(flats)
+sciences0 = np.stack(sciences0)
 
 # convert all the values to floats so arithmetic works
-m_biases   = m_biases.astype('float64')
-m_darks    = m_darks.astype('float64')
-m_flats    = m_flats.astype('float64')
-m_sciences0 = m_sciences0.astype('float64')
+biases    = biases.astype('float64')
+darks     = darks.astype('float64')
+flats     = flats.astype('float64')
+sciences0 = sciences0.astype('float64')
+
+# take the mean of each type of frame
+m_biases    = np.median(biases, axis = 0)
+m_darks     = np.median(darks, axis = 0)
+
+# normalize each flat
+for i,flat in enumerate(flats):
+    flats[i]  = flat - m_darks # subtracting median dark (has bias in it)
+    norm_flat = np.median(flats[i]) # find median of each flat
+    flats[i]  = flats[i]/norm_flat # divide each flat by its own meadian
+
+m_flats     = np.median(flats, axis = 0)
+m_sciences0 = np.median(sciences0, axis = 0)
 
 # subtract the biases from the other frames
-dark    = m_darks - m_biases
-flat    = m_flats - m_biases
+dark     = m_darks - m_biases
+flat     = m_flats - m_biases
 science0 = m_sciences0 - m_biases
 
-# create the reduced science frame from the other medianed frames
-rsf0 = (science0 - dark)/((flat*3) - dark)
+# subtract the dark field from the flat field, accounting for exp. times
+flat = flat - dark/3.
+
+# normalize the flat field
+norm_flat = np.median(flat)
+flat      = flat/norm_flat
+
+# reduce science frame using the calibration frames
+rsf0 = (science0 - dark)/flat
 
 # plot
 zsi = apv.ZScaleInterval()
@@ -141,7 +161,7 @@ for file in sorted(os.listdir(folder)):
 
 
 # take the mean of each type of frame
-m_sciences1 = np.mean(sciences1, axis = 0)
+m_sciences1 = np.median(sciences1, axis = 0)
 
 # convert all the values to floats so arithmetic works
 m_sciences1 = m_sciences1.astype('float64')
@@ -150,7 +170,7 @@ m_sciences1 = m_sciences1.astype('float64')
 science1 = m_sciences1 - m_biases
 
 # create the reduced science frame from the other medianed frames
-rsf1 = (science1 - dark)/((flat*3) - dark)
+rsf1 = (science1 - dark)/flat
 
 # plot
 zsi = apv.ZScaleInterval()
