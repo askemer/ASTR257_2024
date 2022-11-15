@@ -98,15 +98,16 @@ def renorm_and_crop_all(sciences, do_renorm=True):
     
     return sciences
 
-def plot_all_images(sciences, filtername):
-    f, axs = plt.subplot_mosaic("01;23")
+def plot_all_images(sciences, filtername, t):
+    f, axs = plt.subplot_mosaic("01;23", figsize=(8,8))
     for i in range(4):
         img = sciences[filtername][i]
         ax = axs[str(i)]
         ax.set_xticks([])
         ax.set_yticks([])
         ax.imshow(img, cmap="gray")
+    
         #view_as_ds9(img, ax, cmap="gray")
-
-    f.suptitle(f"Dithered images of Neptune, {filtername} filter")
+    f.subplots_adjust(wspace=0, hspace=0)
+    f.suptitle(f"{t} images of Neptune, {filtername} filter", fontsize=24)
 
